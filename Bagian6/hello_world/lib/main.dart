@@ -129,11 +129,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   ElevatedButton(
                     onPressed: () => {
                       _selectDate(context),
-                      print(
-                        selectedDate.day +
-                            selectedDate.month +
-                            selectedDate.year,
-                      ),
+                      print(selectedDate.day +
+                          selectedDate.month +
+                          selectedDate.year),
                     },
                     child: const Text('Pilih Tanggal'),
                   ),
