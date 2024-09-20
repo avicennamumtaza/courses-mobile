@@ -5,16 +5,14 @@ class FabWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        floatingActionButton: FloatingActionButton(
+    return FloatingActionButton(
           onPressed: () {
             // Add your onPressed code here!
           },
-          backgroundColor: Colors.pink,
+          backgroundColor: Colors.white70,
           child: const Icon(Icons.thumb_up),
-        ),
-      ),
-    );
+        );
+    //   ),
+    // );
   }
 }
