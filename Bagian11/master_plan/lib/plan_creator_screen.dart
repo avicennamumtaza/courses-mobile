@@ -1,37 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:master_plan/model/plan.dart';
+import 'package:master_plan/model/data_layer.dart';
 import 'package:master_plan/plan_screen.dart';
 import 'package:master_plan/provider/plan_provider.dart';
 
 class PlanCreatorScreen extends StatefulWidget {
-  const PlanCreatorScreen({super.key});
-
   @override
-  State<PlanCreatorScreen> createState() => _PlanCreatorScreenState();
+  State createState() => _PlanCreateScreenState();
 }
 
-class _PlanCreatorScreenState extends State<PlanCreatorScreen> {
+class _PlanCreateScreenState extends State<PlanCreatorScreen> {
   final textController = TextEditingController();
 
   @override
-  void dispose() {
-    textController.dispose();
-    super.dispose();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      // ganti ‘Namaku' dengan nama panggilan Anda
+      appBar: AppBar(
+          title: const Text('Master Plans Avicenna'),
+          backgroundColor: Theme.of(context).primaryColor),
+      body: Column(children: [
+        _buildListCreator(),
+        Expanded(child: _buildMasterPlans())
+      ]),
+    );
   }
 
   Widget _buildListCreator() {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Material(
-        color: Theme.of(context).cardColor,
-        elevation: 10,
-        child: TextField(
-            controller: textController,
-            decoration: const InputDecoration(
-                labelText: 'Add a plan', contentPadding: EdgeInsets.all(20)),
-            onEditingComplete: addPlan),
-      ),
-    );
+        padding: const EdgeInsets.all(20.0),
+        child: Material(
+          color: Theme.of(context).cardColor,
+          elevation: 10,
+          child: TextField(
+              controller: textController,
+              decoration: const InputDecoration(
+                  labelText: 'Add a plan', contentPadding: EdgeInsets.all(20)),
+              onEditingComplete: addPlan),
+        ));
   }
 
   void addPlan() {
@@ -53,19 +58,12 @@ class _PlanCreatorScreenState extends State<PlanCreatorScreen> {
 
     if (plans.isEmpty) {
       return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          const Icon(
-            Icons.note,
-            size: 100,
-            color: Colors.grey,
-          ),
-          Text(
-            'Anda belum memiliki rencana apapun.',
-            style: Theme.of(context).textTheme.headlineSmall,
-          )
-        ],
-      );
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            const Icon(Icons.note, size: 100, color: Colors.grey),
+            Text('Anda belum memiliki rencana apapun.',
+                style: Theme.of(context).textTheme.headlineSmall)
+          ]);
     }
     return ListView.builder(
       itemCount: plans.length,
@@ -89,14 +87,8 @@ class _PlanCreatorScreenState extends State<PlanCreatorScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      // ganti ‘Namaku' dengan nama panggilan Anda
-      appBar: AppBar(title: const Text('Master Plans Namaku')),
-      body: Column(children: [
-        _buildListCreator(),
-        Expanded(child: _buildMasterPlans())
-      ]),
-    );
+  void dispose() {
+    textController.dispose();
+    super.dispose();
   }
 }
