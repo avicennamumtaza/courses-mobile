@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class MyTextWidget extends StatelessWidget {
   final String name; // Variable untuk nama yang akan di-update
 
-  const MyTextWidget({Key? key, required this.name}) : super(key: key);
+  const MyTextWidget({super.key, required this.name});
 
   @override
   Widget build(BuildContext context) {

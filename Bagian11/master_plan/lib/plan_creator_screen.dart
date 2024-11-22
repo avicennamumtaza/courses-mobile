@@ -4,6 +4,8 @@ import 'package:master_plan/plan_screen.dart';
 import 'package:master_plan/provider/plan_provider.dart';
 
 class PlanCreatorScreen extends StatefulWidget {
+  const PlanCreatorScreen({super.key});
+
   @override
   State createState() => _PlanCreateScreenState();
 }

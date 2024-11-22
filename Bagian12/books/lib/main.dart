@@ -83,7 +83,7 @@ class _FuturePageState extends State<FuturePage> {
 
   Future calculate() async {
     try {
-      await new Future.delayed(const Duration(seconds: 5));
+      await Future.delayed(const Duration(seconds: 5));
       completer.complete(42);
     } catch (_) {
       completer.completeError({});
