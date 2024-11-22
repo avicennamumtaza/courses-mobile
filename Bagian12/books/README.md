@@ -2,8 +2,6 @@
 
 A new Flutter project.
 
-## Getting Started
-
 ## Soal 1
 Nama disisipkan appbar melalui kode berikut.
 ```
@@ -89,6 +87,7 @@ Navigationscreen first muncul, setelah click change color dan memilih button ses
 ## Soal 17
 Navigationscreen muncul, setelah click change color akan terlihat pop-up dialog dan memilih button sesuai color maka akan meneruskan value color yang ada di button tersebut untuk menggantikan warna sebelumnya.
 
+## Getting Started
 This project is a starting point for a Flutter application.
 
 A few resources to get you started if this is your first Flutter project:
