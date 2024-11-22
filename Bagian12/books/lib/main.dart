@@ -1,9 +1,10 @@
 import 'dart:async';
 
-import 'package:books/navigation_dialog.dart';
+// import 'package:books/navigation_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const NavigationDialogScreen(),
+      home: const FuturePage(),
     );
   }
 }
@@ -35,6 +36,25 @@ class FuturePage extends StatefulWidget {
 class _FuturePageState extends State<FuturePage> {
   String result = "";
   late Completer completer;
+  int appCounter = 0;
+
+  Future readAndWritePreference() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    appCounter = prefs.getInt("appCounter") ?? 0;
+    appCounter++;
+    await prefs.setInt("appCounter", appCounter);
+    setState(() {
+      appCounter = appCounter;
+    });
+  }
+
+  Future deletePrefence() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    setState(() {
+      appCounter = 0;
+    });
+  }
 
   Future handleError() async {
     try {
@@ -108,28 +128,62 @@ class _FuturePageState extends State<FuturePage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    readAndWritePreference();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // return Scaffold(
+    //   appBar: AppBar(
+    //     title: const Text("Back from the Future Avicenna"),
+    //   ),
+    //   body: Center(
+    //     child: Column(
+    //       children: [
+    //         const Spacer(),
+    //         ElevatedButton(
+    //           onPressed: () {
+    //             // count();
+    //             // returnFG();
+    //             handleError();
+    //           },
+    //           child: const Text("GO"),
+    //         ),
+    //         const Spacer(),
+    //         Text(result),
+    //         const Spacer(),
+    //         const CircularProgressIndicator(),
+    //         const Spacer(),
+    //       ],
+    //     ),
+    //   ),
+    // );
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Back from the Future Avicenna"),
+        title: const Text("Shared Preferences Avicenna"),
       ),
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            const Spacer(),
+            Text("You have opened this app $appCounter times"),
             ElevatedButton(
               onPressed: () {
-                // count();
-                // returnFG();
-                handleError();
+                readAndWritePreference();
               },
-              child: const Text("GO"),
+              child: const Text("Add Counter"),
             ),
-            const Spacer(),
-            Text(result),
-            const Spacer(),
-            const CircularProgressIndicator(),
-            const Spacer(),
+            ElevatedButton(
+              onPressed: () {
+                deletePrefence();
+              },
+              child: const Text("Reset Counter"),
+            ),
+            // const Spacer(),
+            // Text("App Counter: $appCounter"),
+            // const Spacer(),
           ],
         ),
       ),
