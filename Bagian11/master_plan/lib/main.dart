@@ -19,7 +19,7 @@ class MasterPlanApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: PlanCreatorScreen(),
+        home: const PlanCreatorScreen(),
       ),
     );
   }
