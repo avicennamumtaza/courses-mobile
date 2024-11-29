@@ -46,22 +46,45 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: FutureBuilder(
         future: callPizzas(),
-        builder: (context, AsyncSnapshot<List<Pizza>> snapshot) {
-          if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
+        builder: (context, AsyncSnapshot<List<Pizza>> pizzas) {
+          if (pizzas.hasError) {
+            return Center(child: Text('Error: ${pizzas.error}'));
           }
-          if (!snapshot.hasData) {
+          if (!pizzas.hasData) {
             return const Center(child: CircularProgressIndicator());
           }
+          // final pizzas = pizzas.data!;
           return ListView.builder(
-            itemCount: (snapshot.data == null) ? 0 : snapshot.data!.length,
+            itemCount: (pizzas.data == null) ? 0 : pizzas.data!.length,
             itemBuilder: (BuildContext context, int position) {
-              return ListTile(
-                title: Text(snapshot.data![position].pizzaName),
-                subtitle: Text(
-                    '${snapshot.data![position].description} - \$ ${snapshot.data![position].price}'),
-                // leading: Image.network(snapshot.data![position].imageUrl),
-                // trailing: Text(snapshot.data![position].price.toString()),
+              return Dismissible(
+                key: Key(pizzas.data![position].id.toString()),
+                onDismissed: (item) {
+                  HttpHelper helper = HttpHelper();
+                  pizzas.data!.removeWhere((element) {
+                    return element.id == pizzas.data![position].id;
+                  });
+                  helper.deletePizza(pizzas.data![position].id);
+                },
+                child: ListTile(
+                  title: Text(pizzas.data![position].pizzaName),
+                  subtitle: Text(
+                    '${pizzas.data![position].description} - \$ ${pizzas.data![position].price}',
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PizzaDetailScreen(
+                          pizza: pizzas.data![position],
+                          isNew: false,
+                        ),
+                      ),
+                    );
+                  },
+                  // leading: Image.network(pizzas.data![position].imageUrl),
+                  // trailing: Text(pizzas.data![position].price.toString()),
+                ),
               );
             },
           );
@@ -72,7 +95,16 @@ class _MyHomePageState extends State<MyHomePage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const PizzaDetailScreen(),
+              builder: (context) => PizzaDetailScreen(
+                pizza: Pizza(
+                  id: 0,
+                  pizzaName: '',
+                  description: '',
+                  price: 0.0,
+                  imageUrl: '',
+                ),
+                isNew: true,
+              ),
             ),
           );
         },
